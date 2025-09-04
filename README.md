@@ -44,15 +44,16 @@ step.
 plot1 <- ggplot(data = penguins,
         aes(x = bill_length_mm,
         y = bill_depth_mm)) +
-  theme_minimal(16) +
+  theme_minimal(12) +
   geom_point(alpha = 0.6, color = "steelblue") +
-  labs(title = "Overall Relationship: Bill Length vs. Bill Depth",
-       subtitle = "Ignoring species differences",
+  labs(title = "Overall Relationship",
+       subtitle = "Ignoring species",
        x = "Bill length (mm)",
        y = "Bill depth (mm)") +
   theme(plot.title.position = "plot",
-        plot.caption = element_text(hjust = 0, face= "italic"),
-        plot.caption.position = "plot") +
+        plot.caption = element_text(hjust = 0, face = "italic", lineheight = 1.3),
+        plot.caption.position = "plot",
+        plot.margin = margin(10, 10, 10, 10)) +
   geom_smooth(method = "lm", se = FALSE, color = "red", linewidth = 1.5)
 
 plot1
@@ -74,19 +75,20 @@ plot2 <- ggplot(data = penguins,
        aes(x = bill_length_mm,
            y = bill_depth_mm,
            color = species)) +
-  theme_minimal(16) +
+  theme_minimal(12) +
   geom_point(alpha = 0.7) +
   scale_color_manual(values = c("darkorange","purple","cyan4"),
                      name = "Species") +
-  labs(title = "Simpson's Paradox Revealed!",
-       subtitle = "The relationship reverses when we consider species",
+  labs(title = "Simpson's Paradox",
+       subtitle = "Relationship reverses by species",
        x = "Bill length (mm)",
        y = "Bill depth (mm)",
-       caption = "Red line: Overall trend | Colored lines: Within-species trends") +
+       caption = "Red: Overall | Colored: By species") +
   theme(plot.title.position = "plot",
-        plot.caption = element_text(hjust = 0, face = "italic"),
+        plot.caption = element_text(hjust = 0, face = "italic", lineheight = 1.3),
         plot.caption.position = "plot",
-        legend.position = "bottom") +
+        legend.position = "bottom",
+        plot.margin = margin(10, 10, 10, 10)) +
   # Overall trend (ignoring species)
   geom_smooth(method = "lm", se = FALSE, color = "red", 
               linewidth = 1.5, alpha = 0.8) +
@@ -103,7 +105,7 @@ Relationships](README_files/figure-commonmark/unnamed-chunk-2-1.png)
 
 Notice what just happened: - **Overall trend (red line):** Positive
 relationship - longer bills are deeper - **Within each species (colored
-lines):** Negative relationship - longer bills are actually shallower!
+lines):** Negative relationship - longer bills are shallower!
 
 This is Simpson’s Paradox in action. The species variable is a
 **confounding variable** that completely reverses the apparent
@@ -115,14 +117,14 @@ relationship when we aggregate the data.
 # Create the side-by-side comparison using patchwork
 comparison_plot <- (plot1 | plot2) +
   plot_annotation(
-    title = "Simpson's Paradox: When Aggregation Lies",
-    subtitle = "The same penguin data reveals opposite relationships depending on whether we consider species grouping",
-    caption = "Left: Overall relationship shows positive correlation (longer bills = deeper bills)\nRight: Within each species, the relationship is actually negative (longer bills = shallower bills)\nThis demonstrates how confounding variables can completely reverse apparent trends in data",
+    title = "Simpson's Paradox",
+    subtitle = "Same data, opposite relationships",
+    caption = "Left: Overall positive | Right: Negative within species",
     theme = theme(
-      plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
-      plot.subtitle = element_text(size = 14, hjust = 0.5, margin = margin(b = 20)),
-      plot.caption = element_text(size = 12, hjust = 0, face = "italic", 
-                                 margin = margin(t = 20), lineheight = 1.3)
+      plot.title = element_text(size = 12, face = "bold", hjust = 0.5, margin = margin(b = 5)),
+      plot.subtitle = element_text(size = 9, hjust = 0.5, margin = margin(b = 8)),
+      plot.caption = element_text(size = 8, hjust = 0, face = "italic", 
+                                 margin = margin(t = 8), lineheight = 1.2)
     )
   )
 
@@ -137,9 +139,8 @@ Stories](README_files/figure-commonmark/unnamed-chunk-3-1.png)
 This comparison makes Simpson’s Paradox crystal clear: - **Left plot:**
 Shows the misleading overall trend (positive correlation) - **Right
 plot:** Reveals the true relationship within each species (negative
-correlation) - **The paradox:** The same data tells two completely
-different stories depending on whether we consider the species grouping
-variable
+correlation) - **The paradox:** Same data tells two different stories
+depending on species grouping
 
 ## Key Takeaways: Lessons from Simpson’s Paradox
 
